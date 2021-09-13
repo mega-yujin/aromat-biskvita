@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %} Добавить рецепт {% endblock %}
+
+{% block options %}
+<li><a href="{{ recipe.get_edit_url }}">Изменить рецепт</a></li>
+<li><a href="{{ recipe.get_recount_url }}">Пересчитать рецепт</a></li>
+{% endblock %}
+
+{% block content %}
+<h1>{{ recipe.name }}</h1>
+<br>
+
+<p><strong>Описание:&#32</strong>{{ recipe.description }}</p>
+<p><strong>Рецепт приготовления:&#32</strong>{{ recipe.instruction }}</p>
+<p><strong>Вес:&#32</strong> {{ recipe.weight }}</p>
+<p><strong>Форма:&#32</strong>{{ recipe.get_form_display }}</p>
+{% if recipe.form == "c" %}
+<p><strong>Диаметр:&#32</strong>{{ recipe.diameter }}</p>
+{% elif recipe.form == "s" or "p"%}
+<p><strong>Длина:&#32</strong>{{ recipe.length }}</p>
+{% endif %}
+{% if recipe.form == "r" %}
+<p><strong>Ширина:&#32</strong>{{ recipe.width }}</p>
+{% endif %}
+
+<div>
+    <h4>Ингредиенты:</h4>
+    {% for ingredient in recipe.ingredients_set.all %}
+    <ul>
+        <li>{{ ingredient.component }}: {{ ingredient.quantity }} ({{ ingredient.component.units }}) </li>
+    </ul>
+    {% endfor %}
+</div>
+{% endblock %}

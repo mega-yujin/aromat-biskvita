@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Все рецепты{% endblock %}
+{% block content %}
+    <h1>Списов рецептов</h1>
+
+    {% if recipe_list %}
+    <ul>
+
+      {% for recipe in recipe_list %}
+      <li>
+        <a href="{{ recipe.get_absolute_url }}">{{ recipe.name }}</a>{% if user.is_staff %} <a href="{{ recipe.get_delete_url }}">*Удалить рецепт</a> {% endif %}
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>Пока еще здесь нет рецептов</p>
+    {% endif %}
+{% endblock %}

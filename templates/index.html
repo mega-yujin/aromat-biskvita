@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Аромат Бисквита</h1>
+<br>
+
+{% if user.is_authenticated %}
+<h3>Привет <em>{{ user.first_name }}!</em></h3>
+{% endif %}
+
+<p>Твои рецепты:</p>
+{% if user.is_authenticated %}
+{% for recipe in recipes %}
+<ul>
+    <li><strong><a href="{{ recipe.get_absolute_url }}">{{ recipe.name }}</a></strong></li>
+    <p>({{ recipe.description}})</p>
+</ul>
+{% endfor %}
+{% else %}
+{% for recipe in recipes %}
+<ul>
+    <li><strong>{{ recipe.name }}</strong></li>
+    <p>({{ recipe.description}})</p>
+</ul>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

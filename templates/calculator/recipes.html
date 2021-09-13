@@ -1,0 +1,9 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+{% for recipe in recipes %}
+<div xmlns="http://www.w3.org/1999/html">
+    <h2><a href="{{recipe.get_absolute_url}}">{{ recipe.name }}</a></h2>
+</div>
+{% endfor %}
+{% endblock %}

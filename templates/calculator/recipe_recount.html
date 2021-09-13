@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.name }}{% endblock %}
+
+{% block options %}
+<li><a href="{{ recipe.get_edit_url }}">Изменить рецепт</a></li>
+{% endblock %}
+
+{% block content %}
+<h1>{{ recipe.name }}</h1>
+<br>
+
+<p><strong>Описание:&#32</strong>{{ recipe.description }}</p>
+<p><strong>Рецепт:&#32</strong>{{ recipe.instruction }}</p>
+<p><strong>Вес:&#32</strong><input type="text" id="weight" value="{{ recipe.weight }}"></p>
+<p><strong>Форма:&#32</strong><select id="form">
+    {% for form, val in recipe.FORMS %}
+    <option value="{{ form }}" {% if form == recipe.form %} selected {% endif %}>{{ val }}</option>
+    {% endfor %}
+</select></p>
+<p id="diameter_field"><strong>Диаметр:&#32</strong><input type="text" id="diameter" value="{{ recipe.diameter }}"></p>
+<p id="length_field"><strong>Длина:&#32</strong><input type="text" id="length" value="{{ recipe.length }}"></p>
+<p id="width_field"><strong>Ширина:&#32</strong><input type="text" id="width" value="{{ recipe.width }}"></p>
+<button id="recount">Пересчитать</button>
+<br>
+<br>
+
+<div>
+    <h4>Ингредиенты:</h4>
+    <table class="table table-bordered">
+        <thead>
+            <th>Наименование</th>
+            <th>Количество</th>
+            <th>Единица измерения</th>
+        </thead>
+        {% for ingredient in recipe.ingredients_set.all %}
+        <tr>
+            <td>{{ ingredient.component }}</td>
+            <td class="value">{{ ingredient.quantity }}</td>
+            <td>{{ ingredient.component.units }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
+{% load static %}
+{% block script %}<script src="{% static 'js/recipe_recount.js' %}"></script> {% endblock %}
