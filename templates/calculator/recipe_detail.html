@@ -1,17 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %} Добавить рецепт {% endblock %}
+{% block title %}Добавить рецепт{% endblock %}
+{% block header %}{{ recipe.name }}{% endblock %}
 
 {% block options %}
-<li><a href="{{ recipe.get_edit_url }}">Изменить рецепт</a></li>
-<li><a href="{{ recipe.get_recount_url }}">Пересчитать рецепт</a></li>
-<li><a href="{{ recipe.get_delete_url }}">Удалить рецепт</a></li>
+<li><a href="{{ recipe.get_edit_url }}" class="text-info">Изменить рецепт</a></li>
+<li><a href="{{ recipe.get_recount_url }}" class="text-info">Пересчитать рецепт</a></li>
+<li><a href="{{ recipe.get_delete_url }}" class="text-danger">Удалить рецепт</a></li>
 {% endblock %}
 
 {% block content %}
-<h1>{{ recipe.name }}</h1>
-<br>
-
 <p><strong>Описание:&#32</strong>{{ recipe.description }}</p>
 <p><strong>Рецепт приготовления:&#32</strong>{{ recipe.instruction }}</p>
 <p><strong>Вес:&#32</strong> {{ recipe.weight }}</p>
@@ -26,7 +24,7 @@
 {% endif %}
 
 <div>
-    <h4>Ингредиенты:</h4>
+    <p><strong>Ингредиенты:</strong></p>
     {% for ingredient in recipe.ingredients_set.all %}
     <ul>
         <li>{{ ingredient.component.name }}: {{ ingredient.quantity }} {{ ingredient.component.units }}

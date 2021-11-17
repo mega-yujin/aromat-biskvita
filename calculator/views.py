@@ -18,7 +18,7 @@ def Index(request):
 @login_required
 def RecipeRecountView(request, pk):
     recipe = Recipe.objects.get(pk=pk)
-    form_choices = tuple()
+    # form_choices = tuple()
 
     context = {'recipe': recipe}
     return render(request, 'calculator/recipe_recount.html', context)
@@ -79,7 +79,8 @@ class RecipeCreate(LoginRequiredMixin, generic.CreateView):
         for meta in recipe_metas:
             meta.recipe = self.object
             meta.save()
-        return redirect(reverse('index'))
+        url = self.object.get_absolute_url()
+        return redirect(url)
 
     def form_invalid(self, form, recipe_meta_formset):
         return self.render_to_response(

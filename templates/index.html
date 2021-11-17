@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
+{% block header %}Аромат Бисквита{% endblock %}
+
 {% block content %}
-<h1>Аромат Бисквита</h1>
-<br>
 
 {% if user.is_authenticated %}
-<h3>Привет <em>{{ user.first_name }}!</em></h3>
+<h4>Привет <em>{{ user.first_name }}!</em></h4>
 {% endif %}
 
 <p>Твои рецепты:</p>
 {% if user.is_authenticated %}
 {% for recipe in recipes %}
 <ul>
-    <li><strong><a href="{{ recipe.get_absolute_url }}">{{ recipe.name }}</a></strong></li>
+    <li><strong><a href="{{ recipe.get_absolute_url }}" class="text-info">{{ recipe.name }}</a></strong></li>
     <p>({{ recipe.description}})</p>
 </ul>
 {% endfor %}

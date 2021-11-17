@@ -14,19 +14,19 @@ function formSelect() {
     var index = formSelector.selectedIndex;
     switch (index) {
         case 0: // круг
-            diameter.parentElement.hidden = false;
-            length.parentElement.hidden = true;
-            width.parentElement.hidden = true;
+            diameter.parentElement.parentElement.hidden = false;
+            length.parentElement.parentElement.hidden = true;
+            width.parentElement.parentElement.hidden = true;
             break;
         case 1: // квадрат
-            diameter.parentElement.hidden = true;
-            length.parentElement.hidden = false;
-            width.parentElement.hidden = true;
+            diameter.parentElement.parentElement.hidden = true;
+            length.parentElement.parentElement.hidden = false;
+            width.parentElement.parentElement.hidden = true;
             break;
         case 2: // прямоугольник
-            diameter.parentElement.hidden = true;
-            length.parentElement.hidden = false;
-            width.parentElement.hidden = false;
+            diameter.parentElement.parentElement.hidden = true;
+            length.parentElement.parentElement.hidden = false;
+            width.parentElement.parentElement.hidden = false;
             break;
     }
 }

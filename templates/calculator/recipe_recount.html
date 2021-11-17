@@ -1,51 +1,55 @@
 {% extends "base.html" %}
 
 {% block title %}{{ recipe.name }}{% endblock %}
+{% block header %}{{ recipe.name }}{% endblock %}
 
 {% block options %}
-<li><a href="{{ recipe.get_edit_url }}">Изменить рецепт</a></li>
+    <li><a href="{{ recipe.get_edit_url }}" class="text-info">Изменить рецепт</a></li>
 {% endblock %}
 
 {% block content %}
-<h1>{{ recipe.name }}</h1>
-<br>
-
-<p><strong>Описание:&#32</strong>{{ recipe.description }}</p>
-<p><strong>Рецепт:&#32</strong>{{ recipe.instruction }}</p>
-<p><strong>Вес:&#32</strong><input type="text" id="weight" value="{{ recipe.weight }}"></p>
-<p><strong>Форма:&#32</strong><select id="form">
-    {% for form, val in recipe.FORMS %}
-    <option value="{{ form }}" {% if form == recipe.form %} selected {% endif %}>{{ val }}</option>
-    {% endfor %}
-</select></p>
-<p id="diameter_field"><strong>Диаметр:&#32</strong><input type="text" id="diameter" value="{% if recipe.diameter %}{{ recipe.diameter }}{% endif %}"></p>
-<p id="length_field"><strong>Длина:&#32</strong><input type="text" id="length" value="{% if recipe.length %}{{ recipe.length }}{% endif %}"></p>
-<p id="width_field"><strong>Ширина:&#32</strong><input type="text" id="width" value="{% if recipe.width %}{{ recipe.width }}{% endif %}"></p>
-<button id="recount">Пересчитать</button>
-<br>
-<br>
-
-<div>
-    <h4>Ингредиенты:</h4>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Наименование</th>
-            <th>Количество</th>
-            <th>Единица измерения</th>
-            <th>Примечание</th>
-        </tr>
-        </thead>
-        {% for ingredient in recipe.ingredients_set.all %}
-        <tr>
-            <td>{{ ingredient.component.name }}</td>
-            <td class="value">{{ ingredient.quantity }}</td>
-            <td>{{ ingredient.component.units }}</td>
-            <td>{% if ingredient.annotation %} {{ ingredient.annotation }} {% endif %}</td>
-        </tr>
+    <p><strong>Описание:&#32</strong>{{ recipe.description }}</p>
+    <p><strong>Рецепт:&#32</strong>{{ recipe.instruction }}</p>
+    <p><strong>Вес:&#32</strong><input type="number" id="weight" value="{{ recipe.weight }}"></p>
+    <p><strong>Форма:&#32</strong><select id="form">
+        {% for form, val in recipe.FORMS %}
+            <option value="{{ form }}" {% if form == recipe.form %} selected {% endif %}>{{ val }}</option>
         {% endfor %}
-    </table>
-</div>
+    </select></p>
+    <p id="diameter_field"><strong>Диаметр:&#32</strong><input type="number" id="diameter" value="{% if recipe.diameter %}{{ recipe.diameter }}{% endif %}"></p>
+    <p id="length_field"><strong>Длина:&#32</strong><input type="number" id="length"
+                                                           value="{% if recipe.length %}{{ recipe.length }}{% endif %}">
+    </p>
+    <p id="width_field"><strong>Ширина:&#32</strong><input type="number" id="width"
+                                                           value="{% if recipe.width %}{{ recipe.width }}{% endif %}">
+    </p>
+    <button type="submit" class="px-5 btn btn-info" id="recount">Пересчитать</button>
+    <br>
+    <br>
+
+    <div>
+        <p><strong>Ингредиенты:</strong></p>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Наименование</th>
+                <th>Количество</th>
+                <th>Единица измерения</th>
+                <th>Примечание</th>
+            </tr>
+            </thead>
+            {% for ingredient in recipe.ingredients_set.all %}
+                <tr>
+                    <td>{{ ingredient.component.name }}</td>
+                    <td class="value">{{ ingredient.quantity }}</td>
+                    <td>{{ ingredient.component.units }}</td>
+                    <td>{% if ingredient.annotation %} {{ ingredient.annotation }} {% endif %}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
 {% endblock %}
 {% load static %}
-{% block script %}<script src="{% static 'js/recipe_recount.js' %}"></script> {% endblock %}
+{% block script %}
+    <script src="{% static 'js/recipe_recount.js' %}"></script> {% endblock %}

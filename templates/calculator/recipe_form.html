@@ -1,37 +1,82 @@
 {% extends "base.html" %}
 
 {% block title %}Новый рецепт{% endblock %}
+{% block header %}Новый рецепт{% endblock %}
 {% block content %}
-<div class="container mt-4">
     <form method="post">
         {% csrf_token %}
-        <div class="card">
-            <div class="card-header">
-                <h4>Новый рецепт</h4>
-            </div>
-            <div class="card-body">
-                {{ form.non_form_errors }}
-                {{ form.as_p }}
-                <h5 class="text-info">Ингридиенты:</h5>
-                {{ recipe_meta_formset.non_form_errors }}
-                {{ recipe_meta_formset.management_form }}
-                {% for form in recipe_meta_formset %}
-                <div class="d-flex py-1 inline {{ recipe_meta_formset.prefix }}">
-                    <div>{{form.component.label}}: {{ form.component }}</div>
-                    <div class="ml-auto">{{form.quantity.label}}: {{ form.quantity }}</div>
-                    <div class="ml-auto">{{form.annotation.label}}: {{ form.annotation }}</div>
-                    {% if recipe_meta_formset.can_delete %}
-                        <div class="ml-auto">{{ form.DELETE }} {{ form.DELETE.label }}</div>
-                    {% endif %}
-                </div>
-                {% endfor %}
+        {{ form.non_form_errors }}
+        <div class="form-group">
+            {{ form.name.errors }}
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.testfield }}
+        </div>
+        <div class="form-group">
+            {{ form.description.errors }}
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </div>
+        <div class="form-group">
+            {{ form.instruction.errors }}
+            {{ form.instruction.label_tag }}
+            {{ form.instruction }}
+        </div>
+        <div class="form-group row">
+            {{ form.form.errors }}
+            <label for="id_form" class="col-sm-2 col-form-label">Форма:</label>
+            <div class="col-sm-10">
+                {{ form.form }}
             </div>
         </div>
+        <div class="form-group row">
+            {{ form.diameter.errors }}
+            <label for="id_diameter" class="col-sm-2 col-form-label">Диаметр:</label>
+            <div class="col-sm-10">
+                {{ form.diameter }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form.length.errors }}
+            <label for="id_length" class="col-sm-2 col-form-label">Длина:</label>
+            <div class="col-sm-10">
+                {{ form.length }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form.width.errors }}
+            <label for="id_width" class="col-sm-2 col-form-label">Ширина:</label>
+            <div class="col-sm-10">
+                {{ form.width }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form.weight.errors }}
+            <label for="id_weight" class="col-sm-2 col-form-label">Вес:</label>
+            <div class="col-sm-10">
+                {{ form.weight }}
+            </div>
+        </div>
+
+        <h5>Ингридиенты:</h5>
+        {{ recipe_meta_formset.non_form_errors }}
+        {{ recipe_meta_formset.management_form }}
+        {% for form in recipe_meta_formset %}
+            <div class="d-flex py-1 inline {{ recipe_meta_formset.prefix }}">
+                <div>{{ form.component.label }}: {{ form.component }}</div>
+                <div class="ml-auto">{{ form.quantity.label }}: {{ form.quantity }}</div>
+                <div class="ml-auto">{{ form.annotation.label }}: {{ form.annotation }}</div>
+                {% if recipe_meta_formset.can_delete %}
+                    <div class="ml-auto">{{ form.DELETE }} {{ form.DELETE.label }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
         <div class="mt-3 mb-5">
             <button type="submit" class="px-5 btn btn-info">Сохранить</button>
         </div>
     </form>
-</div>
 {% endblock %}
 {% load static %}
-{% block script %}<script src="{% static 'js/recipe_add.js' %}"></script> {% endblock %}
+{% block script %}
+    <script src="{% static 'js/recipe_add.js' %}"></script> {% endblock %}

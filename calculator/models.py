@@ -19,15 +19,15 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=255, verbose_name='Название')
     description = models.TextField(null=True, verbose_name='Описание')
-    instruction = models.TextField(null=True, verbose_name='Рецепт приготовления')
-    weight = models.FloatField(null=True, verbose_name='Вес')
+    instruction = models.TextField(verbose_name='Рецепт приготовления')
+    weight = models.FloatField(verbose_name='Вес')
     FORMS = (
         ('c', 'Круглая'),
         ('s', 'Квадратная'),
         ('r', 'Прямоугольная'),
     )
     form = models.CharField(max_length=1, choices=FORMS, default='r', verbose_name='Форма')
-    diameter = models.IntegerField(null=True, blank=True, default=20, verbose_name='Диаметр')
+    diameter = models.IntegerField(null=True, blank=True, verbose_name='Диаметр')
     length = models.IntegerField(null=True, blank=True, verbose_name='Длина')
     width = models.IntegerField(null=True, blank=True, verbose_name='Ширина')
     components = models.ManyToManyField(Component, through='Ingredients', through_fields=('recipe', 'component'),
