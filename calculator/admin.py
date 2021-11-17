@@ -4,12 +4,13 @@ from .models import *
 
 class RecipesInline(admin.TabularInline):
     model = Ingredients
+    # fields = ('name', 'quantity', 'annotation')
     extra = 1
     autocomplete_fields = ('recipe', 'component')
 
 
 class RecipesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'weight', 'form', 'diameter','length', 'width')
+    list_display = ('name', 'description', 'weight', 'form', 'diameter', 'length', 'width')
     ordering = ['name']
     search_fields = ['name', 'description']
     list_per_page = 50
@@ -27,9 +28,9 @@ class ComponentsAdmin(admin.ModelAdmin):
 
 
 class IngredientsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'recipe', 'component', 'quantity', 'units')
+    list_display = ('name', 'recipe', 'component', 'quantity', 'units', 'annotation')
     list_display_links = ('name',)
-    list_editable = ('recipe', 'component', 'quantity')
+    list_editable = ('recipe', 'component', 'quantity', 'annotation')
     ordering = ['recipe', 'component']
     list_per_page = 50
     autocomplete_fields = ('recipe', 'component')

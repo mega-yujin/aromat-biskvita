@@ -10,7 +10,7 @@ class Component(models.Model):
     units = models.CharField(max_length=50, verbose_name='Единица измрения')
 
     def __str__(self):  # строковое представление объекта модели
-        return self.name
+        return f"{self.name} ({self.units})"
 
 
 class Recipe(models.Model):
@@ -53,11 +53,12 @@ class Recipe(models.Model):
 class Ingredients(models.Model):
     class Meta:
         verbose_name_plural = 'Ингредиенты'
-        unique_together = (('recipe', 'component'),)
+        unique_together = (('recipe', 'component', 'annotation'),)
 
     component = models.ForeignKey(Component, on_delete=models.CASCADE, verbose_name='Ингредиент')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, verbose_name='Рецепт')
     quantity = models.FloatField(null=False, default=1, verbose_name='Количество')
+    annotation = models.CharField(max_length=255, null=True, blank=True, verbose_name='Примечание')
 
     def name(self):  # функциональное поле "name"
         return self.recipe.name + "(%s)" % self.component.name

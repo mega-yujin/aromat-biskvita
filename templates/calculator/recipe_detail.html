@@ -5,6 +5,7 @@
 {% block options %}
 <li><a href="{{ recipe.get_edit_url }}">Изменить рецепт</a></li>
 <li><a href="{{ recipe.get_recount_url }}">Пересчитать рецепт</a></li>
+<li><a href="{{ recipe.get_delete_url }}">Удалить рецепт</a></li>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +29,11 @@
     <h4>Ингредиенты:</h4>
     {% for ingredient in recipe.ingredients_set.all %}
     <ul>
-        <li>{{ ingredient.component }}: {{ ingredient.quantity }} ({{ ingredient.component.units }}) </li>
+        <li>{{ ingredient.component.name }}: {{ ingredient.quantity }} {{ ingredient.component.units }}
+            {% if ingredient.annotation %}
+            ({{ingredient.annotation}})
+            {% endif %}
+        </li>
     </ul>
     {% endfor %}
 </div>

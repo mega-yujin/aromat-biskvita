@@ -14,6 +14,7 @@ def Index(request):
     context = {'recipes': recipes}
     return render(request, 'index.html', context)
 
+
 @login_required
 def RecipeRecountView(request, pk):
     recipe = Recipe.objects.get(pk=pk)
@@ -38,35 +39,22 @@ class RecipeDelete(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy('recipes')
 
 
-class RecipeUpdate(LoginRequiredMixin,generic.UpdateView):
+class RecipeUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Recipe
-    fields = '__all__'
+    # fields = '__all__'
+    form_class = RecipeForm
+    template_name = 'calculator/recipe_form.html'
 
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super().get_context_data(*args, **kwargs)
+    #     # context['recipe_meta_formset'] = IngredientsInlineFormset()
+    #     context['recipe_meta_formset'] = object
+    #     return context
 
-# class RecipeCreate(generic.CreateView):
-#     model = Recipe
-#     fields = '__all__'
-
-
-# def RecipeCreate(request, pk):
-#     RecipeFormSet = inlineformset_factory(Recipe, Ingredients, fields=('component', 'quantity'))  # вместо none вписать имя формы, которую надо сделать
-#     recipe = Recipe.objects.get(pk=pk)
-#
-#     if request.method == 'POST':
-#         formset = RecipeFormSet(request.POST, instance=recipe)
-#
-#         if formset.is_valid():
-#             formset.seve()
-#             return redirect('index')  # редирект после успешного сохранения
-#     else:
-#         formset = RecipeFormSet(instance=recipe)
-#
-#     context = {'formset': formset, 'recipe': recipe}
-#     return render(request, 'calculator/recipe_create.html', context)  # шаблон сделать
 
 class RecipeCreate(LoginRequiredMixin, generic.CreateView):
     form_class = RecipeForm
-    template_name = 'calculator/recipe_create.html'
+    template_name = 'calculator/recipe_form.html'
 
     def get_context_data(self, **kwargs):
         context = super(RecipeCreate, self).get_context_data(**kwargs)

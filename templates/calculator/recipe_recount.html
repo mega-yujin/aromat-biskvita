@@ -18,9 +18,9 @@
     <option value="{{ form }}" {% if form == recipe.form %} selected {% endif %}>{{ val }}</option>
     {% endfor %}
 </select></p>
-<p id="diameter_field"><strong>Диаметр:&#32</strong><input type="text" id="diameter" value="{{ recipe.diameter }}"></p>
-<p id="length_field"><strong>Длина:&#32</strong><input type="text" id="length" value="{{ recipe.length }}"></p>
-<p id="width_field"><strong>Ширина:&#32</strong><input type="text" id="width" value="{{ recipe.width }}"></p>
+<p id="diameter_field"><strong>Диаметр:&#32</strong><input type="text" id="diameter" value="{% if recipe.diameter %}{{ recipe.diameter }}{% endif %}"></p>
+<p id="length_field"><strong>Длина:&#32</strong><input type="text" id="length" value="{% if recipe.length %}{{ recipe.length }}{% endif %}"></p>
+<p id="width_field"><strong>Ширина:&#32</strong><input type="text" id="width" value="{% if recipe.width %}{{ recipe.width }}{% endif %}"></p>
 <button id="recount">Пересчитать</button>
 <br>
 <br>
@@ -29,15 +29,19 @@
     <h4>Ингредиенты:</h4>
     <table class="table table-bordered">
         <thead>
+        <tr>
             <th>Наименование</th>
             <th>Количество</th>
             <th>Единица измерения</th>
+            <th>Примечание</th>
+        </tr>
         </thead>
         {% for ingredient in recipe.ingredients_set.all %}
         <tr>
-            <td>{{ ingredient.component }}</td>
+            <td>{{ ingredient.component.name }}</td>
             <td class="value">{{ ingredient.quantity }}</td>
             <td>{{ ingredient.component.units }}</td>
+            <td>{% if ingredient.annotation %} {{ ingredient.annotation }} {% endif %}</td>
         </tr>
         {% endfor %}
     </table>

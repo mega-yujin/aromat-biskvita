@@ -93,9 +93,9 @@ function recount(ratio) {               // вычисление необходи
     console.log("Ratio: " + ratio);
     for (var i = 0, len = ingredients.length; i < len; i++) {
         var value = ingredientsQuantity[i] * ratio;
-        ingredients[i].innerHTML = value.toFixed(2);
+        ingredients[i].innerHTML = value.toFixed(1);
     }
-    document.getElementById("weight").value = (initialWeight * ratio).toFixed(2); // новый вес тортика
+    document.getElementById("weight").value = (initialWeight * ratio).toFixed(1); // новый вес тортика
 }
 
 function formSelect() {
