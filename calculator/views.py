@@ -58,33 +58,30 @@ class RecipeCreate(LoginRequiredMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(RecipeCreate, self).get_context_data(**kwargs)
-        context['recipe_meta_formset'] = IngredientsInlineFormset()
+        context['ingredients'] = IngredientsInlineFormset()
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        recipe_meta_formset = IngredientsInlineFormset(self.request.POST)
-        if form.is_valid() and recipe_meta_formset.is_valid():
-            return self.form_valid(form, recipe_meta_formset)
+        ingredients = IngredientsInlineFormset(self.request.POST)
+        if form.is_valid() and ingredients.is_valid():
+            return self.form_valid(form, ingredients)
         else:
-            return self.form_invalid(form, recipe_meta_formset)
+            return self.form_invalid(form, ingredients)
 
-    def form_valid(self, form, recipe_meta_formset):
+    def form_valid(self, form, ingredients):
         self.object = form.save(commit=False)
         self.object.save()
         # saving ProductMeta Instances
-        recipe_metas = recipe_meta_formset.save(commit=False)
+        recipe_metas = ingredients.save(commit=False)
+        print(recipe_metas)
         for meta in recipe_metas:
             meta.recipe = self.object
             meta.save()
         url = self.object.get_absolute_url()
         return redirect(url)
 
-    def form_invalid(self, form, recipe_meta_formset):
-        return self.render_to_response(
-            self.get_context_data(form=form,
-                                  recipe_meta_formset=recipe_meta_formset
-                                  )
-        )
+    def form_invalid(self, form, ingredients):
+        return self.render_to_response(self.get_context_data(form=form, ingredients=ingredients))
