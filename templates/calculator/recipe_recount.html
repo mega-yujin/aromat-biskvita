@@ -8,25 +8,54 @@
 {% endblock %}
 
 {% block content %}
-    <p><strong>Описание:&#32</strong>{{ recipe.description }}</p>
-    <p><strong>Рецепт:&#32</strong>{{ recipe.instruction }}</p>
-    <p><strong>Вес:&#32</strong><input type="number" id="weight" value="{{ recipe.weight }}"></p>
-    <p><strong>Форма:&#32</strong><select id="form">
-        {% for form, val in recipe.FORMS %}
-            <option value="{{ form }}" {% if form == recipe.form %} selected {% endif %}>{{ val }}</option>
+<div class="form-group row">
+     <div class="col-sm-2"><strong>Описание:</strong></div>
+     <div class="col-sm-10">{{ recipe.description }}</div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-2"><strong>Рецепт:</strong></div>
+    <div class="col-sm-10">{{ recipe.instruction }}</div>
+</div>
+<div class="form-group row">
+    <label for="weight" class="col-sm-2 col-form-label"><strong>Вес:</strong></label>
+    <div class="col-sm-10">
+    <input type="number" class="form-control" id="weight" value="{{ recipe.weight }}">
+    </div>
+</div>
+<div class="form-group row">
+    <label for="form" class="col-sm-2 col-form-label"><strong>Форма:</strong></label>
+    <div class="col-sm-10">
+    <select id="form" class="form-control" >
+        {% for f, v in recipe.FORMS %}
+            <option value="{{ f }}" {% if f == recipe.form %} selected {% endif %}>{{ v }}</option>
         {% endfor %}
-    </select></p>
-    <p id="diameter_field"><strong>Диаметр:&#32</strong><input type="number" id="diameter" value="{% if recipe.diameter %}{{ recipe.diameter }}{% endif %}"></p>
-    <p id="length_field"><strong>Длина:&#32</strong><input type="number" id="length"
-                                                           value="{% if recipe.length %}{{ recipe.length }}{% endif %}">
-    </p>
-    <p id="width_field"><strong>Ширина:&#32</strong><input type="number" id="width"
-                                                           value="{% if recipe.width %}{{ recipe.width }}{% endif %}">
-    </p>
-    <button type="submit" class="px-5 btn btn-info" id="recount">Пересчитать</button>
+    </select>
+    </div>
+</div>
+<div class="form-group row" id="diameter_field">
+    <label for="diameter" class="col-sm-2 col-form-label"><strong>Диаметр:</strong></label>
+    <div class="col-sm-10">
+    <input type="number" class="form-control" id="diameter" value="{% if recipe.diameter %}{{ recipe.diameter }}{% endif %}">
+    </div>
+</div>
+<div class="form-group row" id="length_field">
+    <label for="length" class="col-sm-2 col-form-label"><strong>Длина:</strong></label>
+    <div class="col-sm-10">
+    <input type="number" class="form-control" id="length" value="{% if recipe.length %}{{ recipe.length }}{% endif %}">
+    </div>
+</div>
+<div class="form-group row" id="width_field">
+    <label for="width" class="col-sm-2 col-form-label"><strong>Ширина:</strong></label>
+    <div class="col-sm-10">
+    <input type="number" class="form-control" id="width" value="{% if recipe.width %}{{ recipe.width }}{% endif %}">
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm">
+    <button type="submit" class="btn btn-info btn-block" id="recount">Пересчитать</button>
+    </div>
+</div>
     <br>
-    <br>
-
     <div>
         <p><strong>Ингредиенты:</strong></p>
         <table class="table table-bordless table-hover table-sm">

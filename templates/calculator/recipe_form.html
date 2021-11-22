@@ -3,7 +3,7 @@
 {% block title %}Новый рецепт{% endblock %}
 {% block header %}Новый рецепт{% endblock %}
 {% block content %}
-<script type="text/javascript">
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html">
     $(function() {
         $('.ingredients_set').formset({
         addText: 'Добавить ингредиент',
@@ -19,7 +19,6 @@
             {{ form.name.errors }}
             {{ form.name.label_tag }}
             {{ form.name }}
-            {{ form.testfield }}
         </div>
         <div class="form-group">
             {{ form.description.errors }}
@@ -73,7 +72,14 @@
         {{ ingredients.management_form }}
         {% for form in ingredients %}
             <div class="d-flex py-1 inline {{ ingredients.prefix }}">
-                <div>{{ form.component }}</div>
+                <div>{{ form.component }}
+                    <a href="{% url 'component_update' %}" title="Изменить компонент">
+                        <img src="/static/img/change.png">
+                    </a>
+                    <a href="{% url 'component_create' %}" title="Добавить компонент">
+                        <img src="/static/img/add.png">
+                    </a>
+                </div>
                 <div class="ml-auto">{{ form.quantity.label }}: {{ form.quantity }}</div>
                 <div class="ml-auto">{{ form.annotation.label }}: {{ form.annotation }}</div>
                 {% if ingredients.can_delete %}

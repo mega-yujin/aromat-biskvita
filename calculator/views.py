@@ -85,3 +85,13 @@ class RecipeCreate(LoginRequiredMixin, generic.CreateView):
 
     def form_invalid(self, form, ingredients):
         return self.render_to_response(self.get_context_data(form=form, ingredients=ingredients))
+
+
+class ComponentCreate(LoginRequiredMixin, generic.CreateView):
+    model = Component
+    form_class = ComponentForm
+
+
+class ComponentUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Component
+    form_class = ComponentForm
