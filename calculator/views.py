@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from bootstrap_modal_forms.generic import BSModalCreateView
 
 from .models import *
 from .forms import *
@@ -18,8 +18,6 @@ def Index(request):
 @login_required
 def RecipeRecountView(request, pk):
     recipe = Recipe.objects.get(pk=pk)
-    # form_choices = tuple()
-
     context = {'recipe': recipe}
     return render(request, 'calculator/recipe_recount.html', context)
 
@@ -41,15 +39,43 @@ class RecipeDelete(LoginRequiredMixin, generic.DeleteView):
 
 class RecipeUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Recipe
-    # fields = '__all__'
     form_class = RecipeForm
     template_name = 'calculator/recipe_form.html'
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-    #     # context['recipe_meta_formset'] = IngredientsInlineFormset()
-    #     context['recipe_meta_formset'] = object
-    #     return context
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        ingredients_form = IngredientsInlineFormset(instance=self.object)
+        return self.render_to_response(self.get_context_data(form=form, ingredients_form=ingredients_form, edit=True))
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        ingredients_form = IngredientsInlineFormset(self.request.POST, instance=self.object)
+        if form.is_valid() and ingredients_form.is_valid():
+            return self.form_valid(form, ingredients_form)
+        else:
+            return self.form_invalid(form, ingredients_form)
+
+    def form_valid(self, form, ingredients_form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        recipe_metas = ingredients_form.save(commit=False)
+
+        for obj in ingredients_form.deleted_objects:
+            obj.delete()
+
+        for meta in recipe_metas:
+            meta.recipe = self.object
+            meta.save()
+        url = self.object.get_absolute_url()
+        return redirect(url)
+
+    def form_invalid(self, form, ingredients_form):
+        return self.render_to_response(self.get_context_data(form=form, ingredients_form=ingredients_form))
+
 
 
 class RecipeCreate(LoginRequiredMixin, generic.CreateView):
@@ -58,38 +84,40 @@ class RecipeCreate(LoginRequiredMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(RecipeCreate, self).get_context_data(**kwargs)
-        context['ingredients'] = IngredientsInlineFormset()
+        context['ingredients_form'] = IngredientsInlineFormset()
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        ingredients = IngredientsInlineFormset(self.request.POST)
-        if form.is_valid() and ingredients.is_valid():
-            return self.form_valid(form, ingredients)
+        ingredients_form = IngredientsInlineFormset(self.request.POST)
+        if form.is_valid() and ingredients_form.is_valid():
+            return self.form_valid(form, ingredients_form)
         else:
-            return self.form_invalid(form, ingredients)
+            return self.form_invalid(form, ingredients_form)
 
-    def form_valid(self, form, ingredients):
+    def form_valid(self, form, ingredients_form):
         self.object = form.save(commit=False)
         self.object.save()
         # saving ProductMeta Instances
-        recipe_metas = ingredients.save(commit=False)
-        print(recipe_metas)
+        recipe_metas = ingredients_form.save(commit=False)
         for meta in recipe_metas:
             meta.recipe = self.object
             meta.save()
         url = self.object.get_absolute_url()
         return redirect(url)
 
-    def form_invalid(self, form, ingredients):
-        return self.render_to_response(self.get_context_data(form=form, ingredients=ingredients))
+    def form_invalid(self, form, ingredients_form):
+        return self.render_to_response(self.get_context_data(form=form, ingredients_form=ingredients_form))
 
 
-class ComponentCreate(LoginRequiredMixin, generic.CreateView):
-    model = Component
+class ComponentCreate(LoginRequiredMixin, BSModalCreateView):
     form_class = ComponentForm
+    template_name = 'calculator/component_form.html'
+    model = Component
+    success_message = 'Ингредиент создан'
+    success_url = reverse_lazy('recipe_create')
 
 
 class ComponentUpdate(LoginRequiredMixin, generic.UpdateView):
