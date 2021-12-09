@@ -4,6 +4,16 @@
     list-style: none;
 }
 
+.card-header {
+    background-color: #6667ab;
+    color: white;
+}
+
+.btn-info {
+    background-color: #6667ab;
+    border-color: #6667ab;
+}
+
 /* Disable bootstrap d-flex rule to override display: none rule */
 .d-flex[style*="display:none"], .d-flex[style*="display: none"] {
     display:none !important;

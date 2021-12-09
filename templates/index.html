@@ -4,25 +4,18 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
 <h4>Привет <em>{{ user.first_name }}!</em></h4>
-{% endif %}
 
-<p>Твои рецепты:</p>
-{% if user.is_authenticated %}
-{% for recipe in recipes %}
-<ul>
-    <li><strong><a href="{{ recipe.get_absolute_url }}" class="text-info">{{ recipe.name }}</a></strong></li>
-    <p>({{ recipe.description}})</p>
-</ul>
-{% endfor %}
+{% if recipes != -1 %}
+    <p>Твои рецепты:</p>
+    {% for recipe in recipes %}
+    <ul>
+        <li><strong><a href="{{ recipe.get_absolute_url }}" class="text-info">{{ recipe.name }}</a></strong></li>
+        <p>({{ recipe.description}})</p>
+    </ul>
+    {% endfor %}
 {% else %}
-{% for recipe in recipes %}
-<ul>
-    <li><strong>{{ recipe.name }}</strong></li>
-    <p>({{ recipe.description}})</p>
-</ul>
-{% endfor %}
+<p>У тебя еще не рецептов, но ты можешь их <a href="{% url 'recipe_create' %}">добавить</a>!</p>
 {% endif %}
 
 {% endblock %}

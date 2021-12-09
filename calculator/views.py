@@ -1,17 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.http import HttpResponse
 from django.views import generic
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from bootstrap_modal_forms.generic import BSModalCreateView
+from django.utils import timezone
+import json
 
 from .models import *
 from .forms import *
 
 
+@login_required
 def Index(request):
-    recipes = Recipe.objects.all()
-    context = {'recipes': recipes}
+    owner = request.user
+    recipes = Recipe.objects.filter(owner=owner)
+    if recipes.exists():
+        recipes.order_by('recipestatistic')
+        context = {'recipes': recipes}
+    else:
+        context = {'recipes': -1}
     return render(request, 'index.html', context)
 
 
@@ -77,7 +87,6 @@ class RecipeUpdate(LoginRequiredMixin, generic.UpdateView):
         return self.render_to_response(self.get_context_data(form=form, ingredients_form=ingredients_form))
 
 
-
 class RecipeCreate(LoginRequiredMixin, generic.CreateView):
     form_class = RecipeForm
     template_name = 'calculator/recipe_form.html'
@@ -123,3 +132,20 @@ class ComponentCreate(LoginRequiredMixin, BSModalCreateView):
 class ComponentUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Component
     form_class = ComponentForm
+
+# @login_required
+# class FavoritesView(generic.View):
+#     model = Favorites
+#
+#     def post(self, request, pk):
+#         user = get_user(request)
+#         # пытаемся получить закладку из таблицы, или создать новую
+#         bookmark, created = self.model.objects.get_or_create(user=user, recipe_id=pk)
+#         # если не была создана новая закладка,
+#         # то считаем, что запрос был на удаление закладки
+#         if not created:
+#             bookmark.delete()
+#
+#         return HttpResponse(json.dumps({"result": created,
+#                                         "count": self.model.objects.filter(recipe_id=pk).count()}),
+#                             content_type="application/json")

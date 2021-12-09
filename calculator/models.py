@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse  # Used to generate URLs by reversing the URL patterns
+from django.utils import timezone
 
 
 class Component(models.Model):
@@ -17,10 +19,11 @@ class Recipe(models.Model):
     class Meta:
         verbose_name_plural = 'Рецепты'
 
+    owner = models.ForeignKey(User, verbose_name='Создатель рецепта', on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255, verbose_name='Название')
     description = models.TextField(null=True, verbose_name='Описание')
-    instruction = models.TextField(verbose_name='Рецепт приготовления')
-    weight = models.FloatField(verbose_name='Вес')
+    instruction = models.TextField(null=True, blank=False, verbose_name='Рецепт приготовления')
+    weight = models.FloatField(null=True, blank=False, verbose_name='Вес')
     FORMS = (
         ('c', 'Круглая'),
         ('s', 'Квадратная'),
@@ -62,3 +65,25 @@ class Ingredients(models.Model):
 
     def name(self):  # функциональное поле "name"
         return self.recipe.name + "(%s)" % self.component.name
+
+
+class RecipeStatistic(models.Model):
+    class Meta:
+        verbose_name_plural = 'Статистика просмотров'
+        # unique_together = (('recipe', 'user'),)
+
+    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    # date = models.DateTimeField(verbose_name='Дата просмотра', default=timezone.now)
+    views = models.IntegerField(verbose_name='Просмотры', default=0)
+
+    def __str__(self):
+        return self.recipe.name
+
+
+# class Favorites(models.Model):
+#     class Meta:
+#         verbose_name_plural = 'Избранные рецепты'
+#
+#     user = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.CASCADE)
+#     recipe = models.ForeignKey(Recipe, verbose_name='Рецепт', on_delete=models.CASCADE)

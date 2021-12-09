@@ -10,7 +10,7 @@ class RecipesInline(admin.TabularInline):
 
 
 class RecipesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'weight', 'form', 'diameter', 'length', 'width')
+    list_display = ('name', 'description', 'weight', 'form', 'diameter', 'length', 'width', 'owner')
     ordering = ['name']
     search_fields = ['name', 'description']
     list_per_page = 50
@@ -41,6 +41,12 @@ class IngredientsAdmin(admin.ModelAdmin):
         return record.component.units
 
 
+class RecipesStatisticAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'views')
+    search_fields = ('__str__', )
+
+
 admin.site.register(Component, ComponentsAdmin)
 admin.site.register(Ingredients, IngredientsAdmin)
 admin.site.register(Recipe, RecipesAdmin)
+admin.site.register(RecipeStatistic, RecipesStatisticAdmin)
