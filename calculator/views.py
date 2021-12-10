@@ -16,9 +16,8 @@ from .forms import *
 @login_required
 def Index(request):
     owner = request.user
-    recipes = Recipe.objects.filter(owner=owner)
+    recipes = Recipe.objects.filter(owner=owner).order_by('-recipestatistic__views')
     if recipes.exists():
-        recipes.order_by('recipestatistic')
         context = {'recipes': recipes}
     else:
         context = {'recipes': -1}
@@ -40,6 +39,13 @@ class RecipeListView(LoginRequiredMixin, generic.ListView):
 class RecipeDetailView(LoginRequiredMixin, generic.DetailView):
     model = Recipe
     # extra_context = {'form': Recipe.objects.get(pk=generic.DetailView.pk_url_kwarg)}
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        counter, created = RecipeStatistic.objects.get_or_create(recipe=self.object)
+        counter.views += 1
+        counter.save()
+        return self.render_to_response(self.get_context_data())
 
 
 class RecipeDelete(LoginRequiredMixin, generic.DeleteView):
@@ -101,13 +107,16 @@ class RecipeCreate(LoginRequiredMixin, generic.CreateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         ingredients_form = IngredientsInlineFormset(self.request.POST)
+        user = request.user
         if form.is_valid() and ingredients_form.is_valid():
-            return self.form_valid(form, ingredients_form)
+            return self.form_valid(form, ingredients_form, user)
         else:
             return self.form_invalid(form, ingredients_form)
 
-    def form_valid(self, form, ingredients_form):
+    def form_valid(self, form, ingredients_form, user):
         self.object = form.save(commit=False)
+        # saving user as recipe owner
+        self.object.owner = user
         self.object.save()
         # saving ProductMeta Instances
         recipe_metas = ingredients_form.save(commit=False)

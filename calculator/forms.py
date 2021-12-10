@@ -9,7 +9,7 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         # fields = '__all__'
         # fields = ('name', 'description', 'instruction', 'weight', 'form', 'diameter', 'length', 'width')
-        exclude = ('components',)
+        exclude = ('components', 'owner', )
 
     def __init__(self, *args, **kwargs):
         super(RecipeForm, self).__init__(*args, **kwargs)
