@@ -9,9 +9,16 @@
     color: white;
 }
 
-.btn-info {
+.btn-very-pery {
+    color: white;
     background-color: #6667ab;
     border-color: #6667ab;
+}
+
+.btn-very-pery:hover {
+    color: white;
+    background-color: #575891;
+    border-color: #575891;
 }
 
 /* Disable bootstrap d-flex rule to override display: none rule */

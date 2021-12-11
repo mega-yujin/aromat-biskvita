@@ -22,6 +22,9 @@
 {% if recipe.form == "r" %}
 <p><strong>Ширина:&#32</strong>{{ recipe.width }}</p>
 {% endif %}
+{% if recipe.height %}
+<p><strong>Высота:&#32</strong>{{ recipe.height }}</p>
+{% endif %}
 
 <div>
     <p><strong>Ингредиенты:</strong></p>

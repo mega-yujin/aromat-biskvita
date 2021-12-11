@@ -2,11 +2,12 @@ window.onload = init;
 
 var ingredients; // таблица ингридиентов
 var initialForm; // исходная форма тортика
-var initialArea; // исходная площадь
+var initialParams; // исходная площадь
 var initialWeight; // исходный вес
 var initialDiameter; // исходный диаметр круглого торта
 var initialLength; // исходная длина стороны для квадрата или прямоугольника
 var initialWidth; // исходная ширина примоугольника
+var initialHeight; // исходная высота
 var ingredientsQuantity = []; // количество ингридиентов
 
 var formSelector; // селектор выбора формы торта
@@ -28,22 +29,38 @@ function fillVariables () {
     formSelector = document.getElementById("form");
     initialForm = formSelector.value;
     initialWeight = parseFloat(document.getElementById("weight").value, 10);
+    initialHeight = parseFloat(document.getElementById("height").value, 10);
 
     switch (initialForm) {
         case "c":
             initialDiameter = parseInt(document.getElementById("diameter").value, 10);
-            initialArea = (Math.PI * Math.pow(initialDiameter, 2)) / 4;
+            if (initialHeight) {
+                initialParams = ((Math.PI * Math.pow(initialDiameter, 2)) / 4) * initialHeight;
+            }
+            else {
+                initialParams = (Math.PI * Math.pow(initialDiameter, 2)) / 4;
+            }
             break;
 
         case "s":
             initialLength = parseInt(document.getElementById("length").value, 10);
-            initialArea = Math.pow(initialLength, 2);
+            if (initialHeight) {
+                initialParams = Math.pow(initialLength, 2) * initialHeight;
+            }
+            else {
+                initialParams = Math.pow(initialLength, 2);
+            }
             break;
 
         case "r":
             initialLength = parseInt(document.getElementById("length").value, 10);
             initialWidth = parseInt(document.getElementById("width").value, 10);
-            initialArea = initialLength * initialWidth;
+            if (initialHeight) {
+                initialParams = initialLength * initialWidth * initialHeight;
+            }
+            else {
+                initialParams = initialLength * initialWidth;
+            }
             break;
     }
 
@@ -54,13 +71,20 @@ function fillVariables () {
     }
 
     console.log("Initial form: " + initialForm);
-    console.log("Initial area: " + initialArea);
+    console.log("Initial area: " + initialParams);
 
 }
 
 function calculate() {
-    var newArea = areaCalc();
-    var vRatio = ratio(initialArea, newArea);
+    if (initialHeight) {
+        console.log("Volume");
+        var newParams = volumeCalc();
+    }
+    else {
+        console.log("Area");
+        var newParams = areaCalc();
+    }
+    var vRatio = ratio(initialParams, newParams);
     recount(vRatio);
 }
 
@@ -84,9 +108,29 @@ function areaCalc() {
     }
 }
 
+function volumeCalc() {
+    var newForm = document.getElementById("form").value
+    var newHeight = parseFloat(document.getElementById("height").value, 10);
 
-function ratio(initialArea, newArea) {
-    return newArea / initialArea; //вычисление коэффициента пересчета
+    switch (newForm) {
+        case "c":
+            newDiameter = parseInt(document.getElementById("diameter").value, 10);
+            return ((Math.PI * Math.pow(newDiameter, 2)) / 4) * newHeight;
+
+        case "s":
+            newLength = parseInt(document.getElementById("length").value, 10);
+            return Math.pow(newLength, 2) * newHeight;
+
+        case "r":
+            newLength = parseInt(document.getElementById("length").value, 10);
+            newWidth = parseInt(document.getElementById("width").value, 10);
+            return newLength * newWidth * newHeight;
+    }
+}
+
+
+function ratio(initialParams, newParams) {
+    return newParams / initialParams; //вычисление коэффициента пересчета
 }
 
 function recount(ratio) {               // вычисление необходимого количества ингридиентов

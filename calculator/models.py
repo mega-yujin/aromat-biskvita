@@ -29,9 +29,10 @@ class Recipe(models.Model):
         ('r', 'Прямоугольная'),
     )
     form = models.CharField(max_length=1, choices=FORMS, default='r', verbose_name='Форма')
-    diameter = models.IntegerField(null=True, blank=True, verbose_name='Диаметр')
-    length = models.IntegerField(null=True, blank=True, verbose_name='Длина')
-    width = models.IntegerField(null=True, blank=True, verbose_name='Ширина')
+    diameter = models.PositiveIntegerField(null=True, blank=True, verbose_name='Диаметр')
+    length = models.PositiveIntegerField(null=True, blank=True, verbose_name='Длина')
+    width = models.PositiveIntegerField(null=True, blank=True, verbose_name='Ширина')
+    height = models.FloatField(null=True, blank=True, verbose_name='Высота')
     components = models.ManyToManyField(Component, through='Ingredients', through_fields=('recipe', 'component'),
                                         verbose_name='Ингредиенты')
 
