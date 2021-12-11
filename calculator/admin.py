@@ -10,7 +10,7 @@ class RecipesInline(admin.TabularInline):
 
 
 class RecipesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'weight', 'form', 'diameter', 'length', 'width', 'owner')
+    list_display = ('name', 'description', 'weight', 'form', 'diameter', 'length', 'width', 'height', 'owner')
     ordering = ['name']
     search_fields = ['name', 'description']
     list_per_page = 50
