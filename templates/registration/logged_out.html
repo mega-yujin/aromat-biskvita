@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 
-{% block content %}
-<p>Logged out!</p>
+{% block title %}Вы вышли с сайта{% endblock %}
+{% block extrastatic %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
 
-<a href="{% url 'login'%}">Click here to login again.</a>
+{% block body %}
+<div class="container text-center">
+    {% load static %}
+        <img src="{% static 'img/cake_logo.png' %}" alt="" width="100" height="121">
+    <h1 class="h3 mb-3 font-weight-normal">Всего хорошего!</h1>
+    <a href="{% url 'login'%}">Нажмите здесь чтобы войти снова</a>
+</div>
 {% endblock %}

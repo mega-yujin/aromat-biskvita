@@ -1,21 +1,49 @@
 {% extends "base.html" %}
 
-{% block header %}Аромат Бисквита{% endblock %}
+{% block extrastyle %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block nav-main%}active{% endblock %}
 
 {% block content %}
+<div class="p-5 mb-4 bg-light rounded-3 container">
+    <div class="container-fluid">
+        <h1 class="display-6">Привет {{ user.first_name }}!</h1>
+        <p class="col-md-8 fs-4">Что вкусненького хочешь приготовить сегодня?</p>
 
-<h4>Привет <em>{{ user.first_name }}!</em></h4>
-
-{% if recipes != -1 %}
-    <p>Твои рецепты:</p>
-    {% for recipe in recipes %}
-    <ul>
-        <li><strong><a href="{{ recipe.get_absolute_url }}" class="text-info">{{ recipe.name }}</a></strong></li>
-        <p>({{ recipe.description}})</p>
-    </ul>
-    {% endfor %}
-{% else %}
-<p>У тебя еще не рецептов, но ты можешь их <a href="{% url 'recipe_create' %}">добавить</a>!</p>
-{% endif %}
+        {% if recipes != -1 %}
+        <div class="list-group mt-1 mb-4">
+            {% for recipe in recipes %}
+            <a href="{{ recipe.get_absolute_url }}" class="list-group-item list-group-item-action d-flex gap-3 py-3"
+               aria-current="true">
+                {% load static %}
+                <img src="{% static 'img/cake.svg' %}" alt="twbs" width="32" height="32"
+                     class="rounded-circle flex-shrink-0">
+                <div class="d-flex gap-2 w-100 justify-content-between">
+                    <div>
+                        <h6 class="mb-0">{{ recipe.name }}</h6>
+                        <p class="mb-0 opacity-75">{{ recipe.description}}</p>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-very-pery btn-lg" type="button" onclick="window.location.href='{% url 'recipes' %}';">
+                Все
+                рецепты »
+            </button>
+        </div>
+        {% else %}
+        <p class="col-md-8 fs-5">У тебя еще не рецептов, но ты можешь их добавить!</p>
+        <button class="btn btn-very-pery btn-lg" type="button"
+                onclick="window.location.href='{% url 'recipe_create' %}';">
+            Добавить рецепт
+        </button>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}

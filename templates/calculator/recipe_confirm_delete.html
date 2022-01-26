@@ -1,15 +1,23 @@
 {% extends "base.html" %}
 
 {% block title %}{{ recipe.name }}{% endblock %}
+
+{% block extrastyle %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% block content %}
-
-    <h1>Удалить рецепт</h1>
-
-    <p>Вы действительно хотите удалить рецепт: {{ recipe.name }}?</p>
+<div class="p-5 mb-4 bg-light rounded-3 container">
+    <div class="container-fluid">
+        <h1 class="display-6 mb-3">Вы действительно хотите удалить этот рецепт : {{ recipe.name }}?</h1>
 
     <form action="" method="POST">
         {% csrf_token %}
         <input type="submit" class="btn btn-outline-danger" value="Да, удалить"/>
+        <input type="button" class="btn btn-outline-success" value="Нет, отмена" onclick="history.back()" />
     </form>
+    </div>
+</div>
 
 {% endblock %}

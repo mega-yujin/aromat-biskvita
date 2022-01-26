@@ -1,41 +1,48 @@
 {% extends "base.html" %}
 
 {% block title %}Добавить рецепт{% endblock %}
-{% block header %}{{ recipe.name }}{% endblock %}
 
-{% block options %}
-<li><a href="{{ recipe.get_edit_url }}" class="text-info">Изменить рецепт</a></li>
-<li><a href="{{ recipe.get_recount_url }}" class="text-info">Пересчитать рецепт</a></li>
-<li><a href="{{ recipe.get_delete_url }}" class="text-danger">Удалить рецепт</a></li>
+{% block extrastyle %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
 {% block content %}
-<p><strong>Описание:&#32</strong>{{ recipe.description }}</p>
-<p><strong>Рецепт приготовления:&#32</strong>{{ recipe.instruction }}</p>
-<p><strong>Вес:&#32</strong> {{ recipe.weight }}</p>
-<p><strong>Форма:&#32</strong>{{ recipe.get_form_display }}</p>
-{% if recipe.form == "c" %}
-<p><strong>Диаметр:&#32</strong>{{ recipe.diameter }}</p>
-{% elif recipe.form == "s" or "p"%}
-<p><strong>Длина:&#32</strong>{{ recipe.length }}</p>
-{% endif %}
-{% if recipe.form == "r" %}
-<p><strong>Ширина:&#32</strong>{{ recipe.width }}</p>
-{% endif %}
-{% if recipe.height %}
-<p><strong>Высота:&#32</strong>{{ recipe.height }}</p>
-{% endif %}
+<div class="p-5 mb-4 bg-light rounded-3 container">
+    <div class="container-fluid">
+        <h1 class="display-6 mb-2">{{ recipe.name }}</h1>
+        <p class="lead mb-5">{{ recipe.description }}</p>
+        <p><strong>Рецепт:&#32</strong>{{ recipe.instruction | safe | linebreaks }}</p>
+        <p><strong>Вес:&#32</strong> {{ recipe.weight }}</p>
+        <p><strong>Форма:&#32</strong>{{ recipe.get_form_display }}</p>
+        {% if recipe.form == "c" %}
+        <p><strong>Диаметр:&#32</strong>{{ recipe.diameter }}</p>
+        {% elif recipe.form == "s" or "p"%}
+        <p><strong>Длина:&#32</strong>{{ recipe.length }}</p>
+        {% endif %}
+        {% if recipe.form == "r" %}
+        <p><strong>Ширина:&#32</strong>{{ recipe.width }}</p>
+        {% endif %}
+        {% if recipe.height %}
+        <p><strong>Высота:&#32</strong>{{ recipe.height }}</p>
+        {% endif %}
 
-<div>
-    <p><strong>Ингредиенты:</strong></p>
-    {% for ingredient in recipe.ingredients_set.all %}
-    <ul>
-        <li>{{ ingredient.component.name }}: {{ ingredient.quantity }} {{ ingredient.component.units }}
-            {% if ingredient.annotation %}
-            ({{ingredient.annotation}})
-            {% endif %}
-        </li>
-    </ul>
-    {% endfor %}
+        <div class="mb-3">
+            <p><strong>Ингредиенты:</strong></p>
+            {% for ingredient in recipe.ingredients_set.all %}
+            <ul>
+                <li>{{ ingredient.component.name }}: {{ ingredient.quantity }} {{ ingredient.component.units }}
+                    {% if ingredient.annotation %}
+                    ({{ingredient.annotation}})
+                    {% endif %}
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+        <div class="d-grid gap-2 d-md-block">
+            <button type="button" class="btn btn-very-pery" onclick="window.location.href='{{ recipe.get_edit_url }}';">Изменить</button>
+            <button type="button" class="btn btn-very-pery" onclick="window.location.href='{{ recipe.get_recount_url }}';">Рассчитать ингредиенты</button>
+            <button type="button" class="btn btn-danger" onclick="window.location.href='{{ recipe.get_delete_url }}';">Удалить</button>
+        </div>
 </div>
 {% endblock %}
