@@ -1,21 +1,80 @@
 {% extends "base.html" %}
 
 {% block title %}Все рецепты{% endblock %}
-{% block header %}Списов рецептов{% endblock %}
+{% block extrastyle %}
+<style>
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+
+     @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+        }
+     }
+</style>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block nav-recipes%}active{% endblock%}
 
 {% block content %}
-    {% if recipe_list %}
-        <ul>
-
+<section class="py-4 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Твои рецепты</h1>
+            {% if recipe_list %}
+            <p class="lead text-muted">Все твои любимые рецепты показаны на этой странице.
+                А если у тебя появились новые идеи для выпечки, можешь сразу добавить их:)</p>
+            <p>
+                <a href="{% url 'recipe_create' %}" class="btn btn-very-pery my-2 ">Добавить
+                    новый рецепт</a>
+            </p>
+        </div>
+    </div>
+</section>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for recipe in recipe_list %}
-                <li>
-                    <a href="{{ recipe.get_absolute_url }}" class="text-info">{{ recipe.name }}</a>{% if user.is_staff %}
-                    <a href="{{ recipe.get_delete_url }}" class="text-danger">*Удалить рецепт</a> {% endif %}
-                </li>
+            <div class="col">
+                <div class="card shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <a href="{{ recipe.get_absolute_url }}"><rect width="100%" height="100%" fill="#6667ab"></rect></a>
+                        <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Placeholder</text>
+                    </svg>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.name }}</h5>
+                        <p class="card-text">{{ recipe.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.location.href='{{ recipe.get_absolute_url }}';">Открыть</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.location.href='{{ recipe.get_recount_url }}';">Рассчитать</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.location.href='{{ recipe.get_edit_url }}';">Изменить</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger disabled" onclick="window.location.href='{{ recipe.get_delete_url }}';">Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
+        </div>
+    </div>
+</div>
 
-        </ul>
-    {% else %}
-        <p>Пока еще здесь нет рецептов</p>
-    {% endif %}
+{% else %}
+ <p class="lead text-muted">У тебя еще нет рецептов, но ты можешь их добавить!</p>
+            <p>
+                <a href="#" class="btn btn-very-pery my-2 " onclick="window.location.href='{% url 'recipe_create' %}';">Добавить
+                    новый рецепт</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endif %}
 {% endblock %}

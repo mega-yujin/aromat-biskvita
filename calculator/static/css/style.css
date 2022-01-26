@@ -1,12 +1,13 @@
+/* Fixed navbar */
+body {
+  /*min-height: 75rem;*/
+  padding-top: 4.5rem;
+}
+
 .sidebar-nav {
     margin-top: 20px;
     padding: 0;
     list-style: none;
-}
-
-.card-header {
-    background-color: #6667ab;
-    color: white;
 }
 
 .btn-very-pery {
@@ -19,6 +20,19 @@
     color: white;
     background-color: #575891;
     border-color: #575891;
+}
+
+.list-group {
+  width: auto;
+  /*max-width: 460px;*/
+  margin: 4rem auto;
+}
+
+.list-group-item-action:focus, .list-group-item-action:hover {
+  z-index: 1;
+  color: #fff;
+  text-decoration: none;
+  background-color: #6667ab;
 }
 
 /* Disable bootstrap d-flex rule to override display: none rule */

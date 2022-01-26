@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}{% if edit %}{{ form.name.value }}{% else %}Новый рецепт{% endif %}{% endblock %}
-{% block header %}{% if edit %}{{ form.name.value }}{% else %}Новый рецепт{% endif %}{% endblock %}
+
+{% block extrastyle %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% block content %}
 <script type="text/javascript" xmlns="http://www.w3.org/1999/html">
     $(function() {
@@ -19,61 +24,66 @@
     });
 })
 </script>
+
+<div class="p-5 mb-4 bg-light rounded-3 container">
+    <div class="container-fluid">
+
 {% include "calculator/_modal.html" %}
+    <h1 class="display-6 mb-2">Новый рецепт</h1>
     <form method="post" id="myForm">
         {% csrf_token %}
         {{ form.non_form_errors }}
-        <div class="form-group">
+        <div class="mb-3">
             {{ form.name.errors }}
-            {{ form.name.label_tag }}
+            <label for="id_name" class="form-label">Название:</label>
             {{ form.name }}
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             {{ form.description.errors }}
-            {{ form.description.label_tag }}
+            <label for="id_description" class="form-label">Описание:</label>
             {{ form.description }}
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             {{ form.instruction.errors }}
-            {{ form.instruction.label_tag }}
+            <label for="id_instruction" class="form-label">Рецепт:</label>
             {{ form.instruction }}
         </div>
-        <div class="form-group row">
+        <div class="row mb-3">
             {{ form.form.errors }}
             <label for="id_form" class="col-sm-2 col-form-label">Форма:</label>
             <div class="col-sm-10">
                 {{ form.form }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="row mb-3">
             {{ form.diameter.errors }}
             <label for="id_diameter" class="col-sm-2 col-form-label">Диаметр:</label>
             <div class="col-sm-10">
                 {{ form.diameter }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="row mb-3">
             {{ form.length.errors }}
             <label for="id_length" class="col-sm-2 col-form-label">Длина:</label>
             <div class="col-sm-10">
                 {{ form.length }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="row mb-3">
             {{ form.width.errors }}
             <label for="id_width" class="col-sm-2 col-form-label">Ширина:</label>
             <div class="col-sm-10">
                 {{ form.width }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="row mb-3">
             {{ form.width.errors }}
             <label for="id_height" class="col-sm-2 col-form-label">Высота:</label>
             <div class="col-sm-10">
                 {{ form.height }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="row mb-3">
             {{ form.weight.errors }}
             <label for="id_weight" class="col-sm-2 col-form-label">Вес:</label>
             <div class="col-sm-10">
@@ -81,14 +91,14 @@
             </div>
         </div>
 
-        <h5>Ингридиенты:</h5>
+        <h1 class="display-6">Ингредиенты:</h1>
 
         {{ ingredients_form.non_form_errors }}
         {{ ingredients_form.management_form }}
         {% for form in ingredients_form %}
-            <div class="d-flex py-1 inline {{ ingredients_form.prefix }}">
+            <div class="row row-cols-lg-auto g-3 align-items-center {{ ingredients_form.prefix }}">
                 {% for fld in form.hidden_fields %}{{ fld }}{% endfor %}
-                <div>{{ form.component }}
+                <div class="col-12">{{ form.component }}
                     <button class="btn btn-link component_edit" type="button" name="button">
                         <img src="/static/img/change.png">
                     </button>
@@ -96,10 +106,10 @@
                         <img src="/static/img/add.png">
                     </button>
                 </div>
-                <div class="ml-auto">{{ form.quantity.label }}: {{ form.quantity }}</div>
-                <div class="ml-auto">{{ form.annotation.label }}: {{ form.annotation }}</div>
+                <div class="col-12">{{ form.quantity.label }}: {{ form.quantity }}</div>
+                <div class="col-12">{{ form.annotation.label }}: {{ form.annotation }}</div>
                 {% if ingredients_form.can_delete %}
-                    <div class="ml-auto">{{ form.DELETE }}</div>
+                    <div class="col-12">{{ form.DELETE }}</div>
                 {% endif %}
             </div>
         {% endfor %}
@@ -111,7 +121,10 @@
             {% endif %}
         </div>
     </form>
+    </div>
+</div>
 {% endblock %}
+
 {% load static %}
 {% block script %}
     <script src="{% static 'js/recipe_add.js' %}"></script>
