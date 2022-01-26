@@ -2,3 +2,5 @@
 /venv/
 /db_template/
 /run.bat
+/.idea/
+/cakes/settings.env
