@@ -1,7 +1,12 @@
 from django import forms
 from django.forms import inlineformset_factory
+from django.contrib.auth.forms import AuthenticationForm
 from bootstrap_modal_forms.forms import BSModalModelForm
 from .models import Recipe, Ingredients, Component
+
+
+class LoginForm(AuthenticationForm):
+    remember_me = forms.BooleanField(required=False)  # and add the remember_me field
 
 
 class RecipeForm(forms.ModelForm):
@@ -9,7 +14,7 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         # fields = '__all__'
         # fields = ('name', 'description', 'instruction', 'weight', 'form', 'diameter', 'length', 'width')
-        exclude = ('components', 'owner', )
+        exclude = ('components', 'owner',)
 
     def __init__(self, *args, **kwargs):
         super(RecipeForm, self).__init__(*args, **kwargs)
