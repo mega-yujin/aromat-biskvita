@@ -1,16 +1,28 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views import generic
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from bootstrap_modal_forms.generic import BSModalCreateView
 from django.utils import timezone
 import json
 
 from .models import *
 from .forms import *
+
+
+class UpdatedLoginView(LoginView):
+    form_class = LoginForm
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data['remember_me']
+        if not remember_me:
+            self.request.session.set_expiry(0)
+            self.request.session.modified = True
+        return super(UpdatedLoginView, self).form_valid(form)
 
 
 @login_required
@@ -27,30 +39,52 @@ def Index(request):
 @login_required
 def RecipeRecountView(request, pk):
     recipe = Recipe.objects.get(pk=pk)
-    context = {'recipe': recipe}
-    return render(request, 'calculator/recipe_recount.html', context)
+    user = request.user
+    if recipe.owner == user:
+        context = {'recipe': recipe}
+        return render(request, 'calculator/recipe_recount.html', context)
+    else:
+        raise Http404("Такой страницы не существует или у Вас нет прав для её просмотра")
 
 
 class RecipeListView(LoginRequiredMixin, generic.ListView):
     model = Recipe
-    paginate_by = 20
+    paginate_by = 12
+
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset().filter(owner=request.user)
+        context = self.get_context_data()
+        return self.render_to_response(context)
 
 
 class RecipeDetailView(LoginRequiredMixin, generic.DetailView):
     model = Recipe
+
     # extra_context = {'form': Recipe.objects.get(pk=generic.DetailView.pk_url_kwarg)}
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        counter, created = RecipeStatistic.objects.get_or_create(recipe=self.object)
-        counter.views += 1
-        counter.save()
-        return self.render_to_response(self.get_context_data())
+        user = request.user
+        if self.object.owner == user:
+            counter, created = RecipeStatistic.objects.get_or_create(recipe=self.object)
+            counter.views += 1
+            counter.save()
+            return self.render_to_response(self.get_context_data())
+        else:
+            raise Http404("Такой страницы не существует или у Вас нет прав для её просмотра")
 
 
 class RecipeDelete(LoginRequiredMixin, generic.DeleteView):
     model = Recipe
     success_url = reverse_lazy('recipes')
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        user = request.user
+        if self.object.owner == user:
+            return self.render_to_response(self.get_context_data())
+        else:
+            raise Http404("Такой страницы не существует или у Вас нет прав для её просмотра")
 
 
 class RecipeUpdate(LoginRequiredMixin, generic.UpdateView):
@@ -60,10 +94,15 @@ class RecipeUpdate(LoginRequiredMixin, generic.UpdateView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        ingredients_form = IngredientsInlineFormset(instance=self.object)
-        return self.render_to_response(self.get_context_data(form=form, ingredients_form=ingredients_form, edit=True))
+        user = request.user
+        if self.object.owner == user:
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+            ingredients_form = IngredientsInlineFormset(instance=self.object)
+            return self.render_to_response(
+                self.get_context_data(form=form, ingredients_form=ingredients_form, edit=True))
+        else:
+            raise Http404("Такой страницы не существует или у Вас нет прав для её просмотра")
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

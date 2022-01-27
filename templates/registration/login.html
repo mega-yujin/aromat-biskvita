@@ -4,7 +4,7 @@
 
 {% block extrastatic %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}" xmlns="http://www.w3.org/1999/html">
 {% endblock %}
 
 {% block bodycalss %}class="text-center"{% endblock %}
@@ -38,6 +38,11 @@
         <div class="form-floating mb-3">
             <input id="id_password" type="password" name="password" class="form-control" placeholder="Пароль" required>
             <label for="id_password">Пароль</label>
+        </div>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember_me"> Запомнить меня
+            </label>
         </div>
         <button class="w-100 btn btn-very-pery btn-lg btn-primary" type="submit">Войти</button>
         {# Assumes you setup the password_reset view in your URLconf {% url 'password_reset' %} #}
