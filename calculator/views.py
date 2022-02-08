@@ -47,6 +47,11 @@ def RecipeRecountView(request, pk):
         raise Http404("Такой страницы не существует или у Вас нет прав для её просмотра")
 
 
+@login_required
+def ShoppingListView(request):
+    return render(request, 'calculator/shopping_list.html')
+
+
 class RecipeListView(LoginRequiredMixin, generic.ListView):
     model = Recipe
     paginate_by = 12

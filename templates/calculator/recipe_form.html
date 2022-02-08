@@ -29,7 +29,7 @@
     <div class="container-fluid">
 
 {% include "calculator/_modal.html" %}
-    <h1 class="display-6 mb-2">Новый рецепт</h1>
+    <h1 class="display-6 mb-2">{% if edit %}Редактировать рецепт{% else %}Новый рецепт{% endif %}</h1>
     <form method="post" id="myForm">
         {% csrf_token %}
         {{ form.non_form_errors }}
