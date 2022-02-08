@@ -11,22 +11,37 @@ var initialHeight; // исходная высота
 var ingredientsQuantity = []; // количество ингридиентов
 
 var formSelector; // селектор выбора формы торта
-
+// var weightField;
+// var diameterField;
+// var lengthField;
+// var widthField;
+// var heightField;
 
 function init() {
     fillVariables(); // инициализировать переменные начальными значениями
     formSelect(); // скрыть ненужные поля ввода
 
-    var recount = document.getElementById("recount");
-    recount.onclick = calculate; // перечсет ингридиентов по клику
+    var recountButton = document.getElementById("recount");
+    var resetButton = document.getElementById("reset");
+
+    recountButton.onclick = calculate; // перечсет ингридиентов по клику
+    resetButton.onclick = reset; // сброс на начальные значения
 
     formSelector.addEventListener('change', formSelect); // скрыть ненужные поля ввода при выборе формы
 }
 
 
 function fillVariables () {
-    ingredients = document.getElementsByClassName("value");
+
+    ingredients = document.getElementsByClassName("quantity");
     formSelector = document.getElementById("form");
+    weightField = document.getElementById("weight");
+    heightField = document.getElementById("height");
+    diameterField = document.getElementById("diameter");
+    lengthField = document.getElementById("length");
+    widthField = document.getElementById("weight");
+
+
     initialForm = formSelector.value;
     initialWeight = parseFloat(document.getElementById("weight").value, 10);
     initialHeight = parseFloat(document.getElementById("height").value, 10);
@@ -72,7 +87,6 @@ function fillVariables () {
 
     console.log("Initial form: " + initialForm);
     console.log("Initial area: " + initialParams);
-
 }
 
 function calculate() {
@@ -140,6 +154,21 @@ function recount(ratio) {               // вычисление необходи
         ingredients[i].innerHTML = value.toFixed(1);
     }
     document.getElementById("weight").value = (initialWeight * ratio).toFixed(1); // новый вес тортика
+}
+
+function reset() {
+    for (var i = 0, len = ingredients.length; i < len; i++) {
+        ingredients[i].innerHTML = ingredientsQuantity[i];
+    }
+
+    document.getElementById("weight").value = initialWeight;
+    document.getElementById("height").value = initialHeight;
+    document.getElementById("diameter").value = initialDiameter;
+    document.getElementById("length").value = initialLength;
+    document.getElementById("width").value = initialWidth;
+    document.getElementById("form").value = initialForm;
+
+    formSelect();
 }
 
 function formSelect() {

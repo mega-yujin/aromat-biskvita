@@ -5,6 +5,7 @@ from django.conf.urls import url
 urlpatterns = [
     path('', views.Index, name='index'),
     path('recipes/', views.RecipeListView.as_view(), name='recipes'),
+    path('shoppinglist/', views.ShoppingListView, name='shopping_list'),
 
     url(r'^recipe/(?P<pk>\d+)$', views.RecipeDetailView.as_view(), name='recipe-detail'),
     url(r'^recipe/(?P<pk>\d+)/delete/$', views.RecipeDelete.as_view(), name='recipe_delete'),
