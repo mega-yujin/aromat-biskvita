@@ -58,8 +58,10 @@
         </div>
         <div class="row mb-5">
             <div class="d-grid gap-2 d-md-block">
-                <button type="submit" class="btn btn-very-pery" id="recount">Пересчитать</button>
-                <button type="reset" class="btn btn-warning disabled" id="reset">Сброс</button>
+                <button type="button" class="btn btn-very-pery" id="recount">Пересчитать</button>
+                <button type="button" class="btn btn-warning me-3" id="reset">Сброс</button>
+                <a href="{% url 'shopping_list' %}" class="btn btn-warning">Список покупок</a>
+                <button type="button" class="btn btn-very-pery" id="add">Добавить в список</button>
             </div>
         </div>
         </form>
@@ -74,14 +76,16 @@
                     <th>Примечание</th>
                 </tr>
                 </thead>
+                <tbody>
                 {% for ingredient in recipe.ingredients_set.all %}
                     <tr>
-                        <td>{{ ingredient.component.name }}</td>
-                        <td class="value">{{ ingredient.quantity }}</td>
+                        <td class="component">{{ ingredient.component.name }}</td>
+                        <td class="quantity">{{ ingredient.quantity }}</td>
                         <td>{{ ingredient.component.units }}</td>
                         <td>{% if ingredient.annotation %} {{ ingredient.annotation }} {% endif %}</td>
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
@@ -90,6 +94,8 @@
 
 {% endblock %}
 
-{% load static %}
 {% block script %}
-    <script src="{% static 'js/recipe_recount.js' %}"></script> {% endblock %}
+{% load static %}
+    <script src="{% static 'js/recipe_recount.js' %}"></script>
+    <script src="{% static 'js/recipe_ingredients.js' %}"></script>
+{% endblock %}
