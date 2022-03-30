@@ -1,3 +1,5 @@
+// add ingredients form
+
 window.onload = init;
 
 var formSelector = document.getElementById("id_form")

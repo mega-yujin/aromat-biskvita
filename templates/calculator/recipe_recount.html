@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="p-5 mb-4 bg-light rounded-3 container">
+<div class="p-sm-5 mb-4 bg-light rounded-3 container">
     <div class="container-fluid">
         <h1 class="display-6 mb-2">{{ recipe.name }}</h1>
         <p class="lead mb-5">{{ recipe.description }}</p>
@@ -59,7 +59,7 @@
         <div class="row mb-5">
             <div class="d-grid gap-2 d-md-block">
                 <button type="button" class="btn btn-very-pery" id="recount">Пересчитать</button>
-                <button type="button" class="btn btn-warning me-3" id="reset">Сброс</button>
+                <button type="button" class="btn btn-warning me-sm-3" id="reset">Сброс</button>
                 <a href="{% url 'shopping_list' %}" class="btn btn-warning">Список покупок</a>
                 <button type="button" class="btn btn-very-pery" id="add">Добавить в список</button>
             </div>
@@ -81,7 +81,7 @@
                     <tr>
                         <td class="component">{{ ingredient.component.name }}</td>
                         <td class="quantity">{{ ingredient.quantity }}</td>
-                        <td>{{ ingredient.component.units }}</td>
+                        <td class="units">{{ ingredient.component.units }}</td>
                         <td>{% if ingredient.annotation %} {{ ingredient.annotation }} {% endif %}</td>
                     </tr>
                 {% endfor %}

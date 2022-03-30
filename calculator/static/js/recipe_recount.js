@@ -1,3 +1,5 @@
+// пересчет ингредиентов
+
 window.onload = init;
 
 var ingredients; // таблица ингридиентов
