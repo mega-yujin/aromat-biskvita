@@ -44,8 +44,8 @@
         <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
             <button class="btn btn-outline-light" type="submit">Поиск</button>
+            <button class="ms-2 btn btn-warning" type="button" onclick="window.location.href='{% url 'logout' %}';">Выход</button>
         </form>
-        <button type="button" class="ms-2 btn btn-warning" onclick="window.location.href='{% url 'logout' %}';">Выход</button>
     </div>
     </div>
 </nav>

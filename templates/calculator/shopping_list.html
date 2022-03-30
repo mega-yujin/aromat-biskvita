@@ -8,11 +8,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="p-5 mb-4 bg-light rounded-3 container">
+<div class="p-sm-5 mb-4 bg-light rounded-3 container">
     <div class="container-fluid">
-        <h1 class="display-6 mb-2">Твой список покупок</h1>
-        <p class="lead mb-5">ТРОЛОЛО</p>
-        <div class="table-responsive" id="listTable">
+        <h1 class="display-6 mb-2" id="header">Список ингридиентов для покупки</h1>
+        <p class="lead mb-5" id="sub-header"></p>
+        <div class="table-responsive" id="listTable" hidden>
             <table class="table table-bordless table-hover table-sm">
                 <thead>
                 <tr>
@@ -25,7 +25,7 @@
             </table>
         </div>
         <div class="d-grid gap-2 d-md-block">
-            <button type="button" class="btn btn-very-pery" id="clear">Очистить корзину</button>
+            <button type="button" class="btn btn-very-pery" id="clear">Очистить список</button>
         </div>
     </div>
 </div>

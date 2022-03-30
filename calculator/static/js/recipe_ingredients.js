@@ -1,10 +1,12 @@
+// adding ingredients to list
+
 var tableQuantity = document.getElementsByClassName("quantity");
 var tableComponents = document.getElementsByClassName("component");
-var add = document.getElementById("add");
-var clear = document.getElementById("clear");
+var tableUnits = document.getElementsByClassName("units");
+var addButton = document.getElementById("add");
+// var clearButton = document.getElementById("clear");
 
-add.onclick = addToList; // добавить ингридиенты в скписок
-clear.onclick = clearList; // очистить список
+addButton.onclick = addToList; // добавить ингридиенты в скписок
 
 
 function addToList() {
@@ -20,30 +22,22 @@ function addToList() {
 
 
 function getItems(listMap) {
-    // var list = new Map();
-
     for (var i = 0, len = tableComponents.length; i < len; i++) {
         var component = tableComponents[i].innerHTML;
         var quantity = tableQuantity[i].innerHTML;
+        var units = tableUnits[i].innerHTML;
+        var key = tableComponents[i].innerHTML + `(${units})`;
 
-        if (listMap.get(component)) {
-            var storedQauntity = parseFloat(listMap.get(component), 10);
+        if (listMap.get(key)) {
+            var storedQauntity = parseFloat(listMap.get(key)[1], 10);
             var newQuantity = parseFloat((quantity), 10);
-            listMap.set(component, storedQauntity+newQuantity);
+            listMap.set(key, [component, (storedQauntity + newQuantity), units]);
         }
         else {
-            listMap.set(component, quantity);
+            listMap.set(component + `(${units})`, [component, quantity, units]);
         }
-
-        var jsonlist = JSON.stringify([...listMap]);
     }
 
+    var jsonlist = JSON.stringify([...listMap]);
     localStorage.setItem("list", jsonlist);
-}
-
-
-function clearList() {
-    console.log("GHGJHGJHGJH");
-    localStorage.removeItem("list");
-    document.getElementById("listTable").hidden = true;
 }
