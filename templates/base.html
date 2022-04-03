@@ -68,7 +68,15 @@
         {% endblock %}
         {% block script %}{% endblock %}
 </main>
+<div class="container p-sm-0 mt-5">
+  <footer class="d-flex flex-wrap justify-content-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex justify-content-center">
+      <span class="text-muted">&copy; <span id="year"></span> FinikSoft, Inc</span>
+    </div>
+  </footer>
+</div>
 {% endblock %}
+<script>document.getElementById("year").innerHTML = new Date().getFullYear()</script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>
