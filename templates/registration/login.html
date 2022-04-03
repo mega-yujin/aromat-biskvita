@@ -13,7 +13,7 @@
 <main class="form-signin">
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        {% load static %}
+            {% load static %}
         <img src="{% static 'img/cake_logo.png' %}" alt="" width="30%" height="30%">
         {% if form.errors %}
             <p>Имя пользователя или пароль введены неверно. Пожалуйста введите учетные данные заново.</p>

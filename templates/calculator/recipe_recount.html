@@ -56,13 +56,14 @@
                 <input type="number" class="form-control" id="weight" value="{{ recipe.weight }}">
             </div>
         </div>
-        <div class="row mb-5">
-            <div class="d-grid gap-2 d-md-block">
+        <div class="row mb-3">
+            <div class="d-grid gap-2 d-md-block mb-3">
                 <button type="button" class="btn btn-very-pery" id="recount">Пересчитать</button>
                 <button type="button" class="btn btn-warning me-sm-3" id="reset">Сброс</button>
                 <a href="{% url 'shopping_list' %}" class="btn btn-warning">Список покупок</a>
                 <button type="button" class="btn btn-very-pery" id="add">Добавить в список</button>
             </div>
+            <div id="liveAlertPlaceholder"></div>
         </div>
         </form>
         <h1 class="display-6">Ингредиенты:</h1>

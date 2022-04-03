@@ -4,10 +4,22 @@ var tableQuantity = document.getElementsByClassName("quantity");
 var tableComponents = document.getElementsByClassName("component");
 var tableUnits = document.getElementsByClassName("units");
 var addButton = document.getElementById("add");
-// var clearButton = document.getElementById("clear");
+var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
 addButton.onclick = addToList; // добавить ингридиенты в скписок
 
+if (addButton) {
+    addButton.addEventListener('click', function () {
+        alert('Ингредиенты добавлены в список покупок', 'success')
+    })
+}
+
+function alert(message, type) {
+    var wrapper = document.createElement('div')
+    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+    alertPlaceholder.append(wrapper)
+}
 
 function addToList() {
     if (localStorage.getItem("list")) {
