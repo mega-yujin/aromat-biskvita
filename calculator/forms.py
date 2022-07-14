@@ -6,14 +6,12 @@ from .models import Recipe, Ingredients, Component
 
 
 class LoginForm(AuthenticationForm):
-    remember_me = forms.BooleanField(required=False)  # and add the remember_me field
+    remember_me = forms.BooleanField(required=False)
 
 
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        # fields = '__all__'
-        # fields = ('name', 'description', 'instruction', 'weight', 'form', 'diameter', 'length', 'width')
         exclude = ('components', 'owner',)
 
     def __init__(self, *args, **kwargs):
@@ -25,7 +23,6 @@ class RecipeForm(forms.ModelForm):
 class IngredientsForm(forms.ModelForm):
     class Meta:
         model = Ingredients
-        # fields = ('quantity',)
         fields = '__all__'
 
 
