@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from bootstrap_modal_forms.generic import BSModalCreateView
 
-from .models import *
-from .forms import *
+from .models import Recipe, RecipeStatistic, Component
+from .forms import RecipeForm, LoginForm, ComponentForm, IngredientsInlineFormset
 
 
 class UpdatedLoginView(LoginView):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import Recipe, Ingredients, Component, RecipeStatistic
 
 
 class RecipesInline(admin.TabularInline):
