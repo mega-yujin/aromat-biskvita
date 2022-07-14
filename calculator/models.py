@@ -10,7 +10,7 @@ class Component(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название')
     units = models.CharField(max_length=50, verbose_name='Единица измрения')
 
-    def __str__(self):  # строковое представление объекта модели
+    def __str__(self):
         return f"{self.name} ({self.units})"
 
 
@@ -40,7 +40,6 @@ class Recipe(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        # return "/recipe/%s/" % self.pk
         return reverse('recipe-detail', args=[str(self.id)])
 
     def get_delete_url(self):
@@ -63,27 +62,16 @@ class Ingredients(models.Model):
     quantity = models.FloatField(null=False, default=1, verbose_name='Количество')
     annotation = models.CharField(max_length=255, null=True, blank=True, verbose_name='Примечание')
 
-    def name(self):  # функциональное поле "name"
+    def name(self):
         return self.recipe.name + "(%s)" % self.component.name
 
 
 class RecipeStatistic(models.Model):
     class Meta:
         verbose_name_plural = 'Статистика просмотров'
-        # unique_together = (('recipe', 'user'),)
 
     recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    # date = models.DateTimeField(verbose_name='Дата просмотра', default=timezone.now)
     views = models.IntegerField(verbose_name='Просмотры', default=0)
 
     def __str__(self):
         return self.recipe.name
-
-
-# class Favorites(models.Model):
-#     class Meta:
-#         verbose_name_plural = 'Избранные рецепты'
-#
-#     user = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.CASCADE)
-#     recipe = models.ForeignKey(Recipe, verbose_name='Рецепт', on_delete=models.CASCADE)
