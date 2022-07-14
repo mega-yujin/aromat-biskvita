@@ -1,14 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect
+from django.http import Http404
 from django.views import generic
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from bootstrap_modal_forms.generic import BSModalCreateView
-from django.utils import timezone
-import json
 
 from .models import *
 from .forms import *
@@ -64,8 +61,6 @@ class RecipeListView(LoginRequiredMixin, generic.ListView):
 
 class RecipeDetailView(LoginRequiredMixin, generic.DetailView):
     model = Recipe
-
-    # extra_context = {'form': Recipe.objects.get(pk=generic.DetailView.pk_url_kwarg)}
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -185,20 +180,3 @@ class ComponentCreate(LoginRequiredMixin, BSModalCreateView):
 class ComponentUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Component
     form_class = ComponentForm
-
-# @login_required
-# class FavoritesView(generic.View):
-#     model = Favorites
-#
-#     def post(self, request, pk):
-#         user = get_user(request)
-#         # пытаемся получить закладку из таблицы, или создать новую
-#         bookmark, created = self.model.objects.get_or_create(user=user, recipe_id=pk)
-#         # если не была создана новая закладка,
-#         # то считаем, что запрос был на удаление закладки
-#         if not created:
-#             bookmark.delete()
-#
-#         return HttpResponse(json.dumps({"result": created,
-#                                         "count": self.model.objects.filter(recipe_id=pk).count()}),
-#                             content_type="application/json")
